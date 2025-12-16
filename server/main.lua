@@ -26,16 +26,14 @@ while true do
                 table.remove(clients, i)
                 break
             end
-        end
+        elseif line then
+            c:send(line .. "\n")
+            print("Received: " .. line .. " from Client (#" .. i .. ")")
 
-        if not line then break end
-
-        c:send(line .. "\n")
-        print("Received: " .. line .. " from Client (#" .. i .. ")")
-
-        if line == "quit" then
-            c:close()
-            break
+            if line == "quit" then
+                c:close()
+                table.remove(clients, i)
+            end
         end
     end
 

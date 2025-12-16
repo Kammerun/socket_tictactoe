@@ -19,16 +19,16 @@ function love.load()
     connection:Send("Start of connection")
 
     btn:SetOnClick(function()
-        print("Button wurde geklickt!")
+        print("Sending: Hey to Server")
         connection:Send("Hey")
     end)
 end
 
-function love.update()
-    btn:Update()
+function love.update(dt)
+    btn:Update(dt)
     local line, err = connection:Receive()
     if line then
-        print("Server:", line)
+        print("Received: " .. line .. " from Server")
     end
 end
 
