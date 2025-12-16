@@ -1,17 +1,41 @@
-local socket = require("socket")
+local connection
+local button = require("gui/button")
+local btn
 
-local connection = socket.connect("127.0.0.1", 22337)
-if not connection then error("Cant connect to Server") end
+local conf = {
+    {1, 1, nil}, {2, 1, nil}, {3, 1, nil},
+    {1, 2, nil}, {2, 2, nil}, {3, 2, nil},
+    {1, 3, nil}, {2, 3, nil}, {3, 3, nil}
+}
+local btn_text = "Feld 1, 1"
 
-connection:send("Test!" .. "\n")
+function love.load()
+    connection = require("luasocket")
+    btn = button:Create()
+    btn:SetPos(100, 100)
+    btn:SetSize(200, 50)
+    btn:SetText(btn_text)
 
-local line, err = connection:receive()
-if not err then print(line) end
+    connection:Send("Start of connection")
 
-os.execute("sleep 5")
+    btn:SetOnClick(function()
+        print("Button wurde geklickt!")
+        connection:Send("Hey")
+    end)
+end
 
-connection:send("Test!" .. "\n")
+function love.update()
+    btn:Update()
+    local line, err = connection:Receive()
+    if line then
+        print("Server:", line)
+    end
+end
 
-local line, err = connection:receive()
-print(err)
-if not err then print(line) end
+function love.draw()
+    btn:Draw()
+end
+
+function love.mousepressed(x, y, button)
+    btn:MousePressed(x, y, button)
+end

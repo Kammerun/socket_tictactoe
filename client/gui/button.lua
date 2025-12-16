@@ -1,0 +1,79 @@
+local Button = {}
+Button.__index = Button
+
+function Button:Create()
+    local self = setmetatable({}, Button)
+
+    -- Default-Werte
+    self.x = 0
+    self.y = 0
+    self.w = 100
+    self.h = 40
+
+    self.text = "Button"
+    self.hovered = false
+    self.onClick = nil
+
+    return self
+end
+
+function Button:SetPos(x, y)
+    self.x = x
+    self.y = y
+end
+
+function Button:SetSize(w, h)
+    self.w = w
+    self.h = h
+end
+
+function Button:SetText(text)
+    self.text = text
+end
+
+function Button:SetOnClick(fn)
+    self.onClick = fn
+end
+
+function Button:Update(dt)
+    local mx, my = love.mouse.getPosition()
+    self.hovered =
+        mx >= self.x and mx <= self.x + self.w and
+        my >= self.y and my <= self.y + self.h
+end
+
+function Button:MousePressed(x, y, button)
+    if button == 1 and self.hovered then
+        if self.onClick then
+            self.onClick()
+        end
+    end
+end
+
+function Button:Draw()
+    if self.hovered then
+        love.graphics.setColor(0.8, 0.8, 0.8)
+    else
+        love.graphics.setColor(0.6, 0.6, 0.6)
+    end
+
+    love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)
+
+    love.graphics.setColor(0, 0, 0)
+    love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
+
+    -- Text zentrieren
+    local font = love.graphics.getFont()
+    local textW = font:getWidth(self.text)
+    local textH = font:getHeight()
+
+    love.graphics.print(
+        self.text,
+        self.x + (self.w - textW) / 2,
+        self.y + (self.h - textH) / 2
+    )
+
+    love.graphics.setColor(1, 1, 1)
+end
+
+return Button
