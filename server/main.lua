@@ -8,6 +8,12 @@ print("Please telnet to localhost on port " .. port, "and ip " .. ip)
 
 local clients = {}
 
+local function Broadcast(text)
+    for i = 1, #clients do
+        clients[i]:send(text)
+    end
+end
+
 while true do
     local client = server:accept()
     if client then
@@ -27,12 +33,16 @@ while true do
                 break
             end
         elseif line then
-            c:send(line .. ", " .. i .. "\n")
-            print("Received: " .. line .. " from Client (#" .. i .. ")")
-
             if line == "quit" then
                 c:close()
                 table.remove(clients, i)
+            elseif line == "Start of connection" then
+                -- Sending Client index for window title
+                c:send(i .. "\n")
+            else
+                --[[ c:send(line .. ", " .. i .. "\n") ]]
+                Broadcast(line .. i .. "\n")
+                print("Received: " .. line .. " from Client (#" .. i .. ")")
             end
         end
     end

@@ -9,10 +9,16 @@ function Button:Create()
     self.y = 0
     self.w = 100
     self.h = 40
+    self.color = {
+        r = 1,
+        g = 1,
+        b = 1
+    }
 
     self.text = "Button"
     self.hovered = false
     self.onClick = nil
+    self.enabled = true
 
     return self
 end
@@ -27,12 +33,34 @@ function Button:SetSize(w, h)
     self.h = h
 end
 
+function Button:SetIndex(index)
+    self.index = index
+end
+
+function Button:GetIndex()
+    return self.index
+end
+
 function Button:SetText(text)
     self.text = text
 end
 
 function Button:SetOnClick(fn)
     self.onClick = fn
+end
+
+function Button:SetEnabled(b)
+    self.enabled = b
+end
+
+function Button:SetColor(r, g ,b)
+    self.color.r = r
+    self.color.g = g
+    self.color.b = b
+end
+
+function Button:GetColor()
+    return self.color.r, self.color.g, self.color.b
 end
 
 function Button:Update(dt)
@@ -43,6 +71,7 @@ function Button:Update(dt)
 end
 
 function Button:MousePressed(x, y, button)
+    if not self.enabled then return false end
     if button == 1 and self.hovered then
         if self.onClick then
             self.onClick()
@@ -54,10 +83,11 @@ end
 
 
 function Button:Draw()
+    local r, g, b = self:GetColor()
     if self.hovered then
-        love.graphics.setColor(0.8, 0.8, 0.8)
+        love.graphics.setColor(r, g, b)
     else
-        love.graphics.setColor(0.6, 0.6, 0.6)
+        love.graphics.setColor(r * 0.8, g * 0.8, b * 0.8)
     end
 
     love.graphics.rectangle("fill", self.x, self.y, self.w, self.h)

@@ -2,26 +2,29 @@ local game = {}
 
 local button = require("gui/button")
 local buttons = {}
-local btn
+
 
 game.conf = {
-    {{1, 1, nil}, {2, 1, nil}, {3, 1, nil}},
-    {{1, 2, nil}, {2, 2, nil}, {3, 2, nil}},
-    {{1, 3, nil}, {2, 3, nil}, {3, 3, nil}}
+    {0, 0, 0},
+    {0, 0, 0},
+    {0, 0, 0},
 }
 
 function game:CreateButtons(connection)
     for row, row_value in ipairs(game.conf) do
         for column, value in ipairs(row_value) do
             --print(value[1], value[2])
-            btn = button:Create()
+            local btn = button:Create()
             btn:SetPos(250 * column, 100 * row)
             btn:SetSize(200, 50)
-            btn:SetText(value[1] .. ", " .. value[2])
+            btn:SetText(#buttons + 1)
+            btn:SetColor(1, 0.5, 0)
+            btn:SetIndex(#buttons + 1)
 
             btn:SetOnClick(function()
-                print("Sending: " .. value[1] .. ", " .. value[2] .. "" .. " to Server")
-                connection:Send(value[1] .. ", " .. value[2])
+                print("Sending: " .. #buttons + 1 .. " to Server")
+                connection:Send(btn:GetIndex())
+                btn:SetEnabled(false)
             end)
 
             table.insert(buttons, btn)
