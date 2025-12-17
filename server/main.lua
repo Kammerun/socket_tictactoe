@@ -4,7 +4,7 @@ local server = assert(socket.bind("*", 22337))
 server:settimeout(0)
 local ip, port = server:getsockname()
 
-print("Please telnet to localhost on port " .. port)
+print("Please telnet to localhost on port " .. port, "and ip " .. ip)
 
 local clients = {}
 
@@ -27,7 +27,7 @@ while true do
                 break
             end
         elseif line then
-            c:send(line .. "\n")
+            c:send(line .. ", " .. i .. "\n")
             print("Received: " .. line .. " from Client (#" .. i .. ")")
 
             if line == "quit" then

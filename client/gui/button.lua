@@ -47,8 +47,11 @@ function Button:MousePressed(x, y, button)
         if self.onClick then
             self.onClick()
         end
+        return true
     end
+    return false
 end
+
 
 function Button:Draw()
     if self.hovered then
