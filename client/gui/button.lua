@@ -68,6 +68,14 @@ function Button:Update(dt)
     self.hovered =
         mx >= self.x and mx <= self.x + self.w and
         my >= self.y and my <= self.y + self.h
+
+    local padding = 25
+    local window_width, window_height = love.window.getMode()
+    self.w = (window_width - 4 * padding) / 3
+    self.h = (window_height - 4 * padding) / 3 - 50 -- for the text
+    local xpos = self:GetIndex() % 3 ~= 0 and self:GetIndex() % 3 or 3
+    self.x = padding * xpos + self.w * (xpos - 1)
+    self.y = padding * math.ceil(self:GetIndex() / 3) + self.h * (math.ceil(self:GetIndex() / 3) - 1)
 end
 
 function Button:MousePressed(x, y, button)

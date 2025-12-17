@@ -24,7 +24,6 @@ function game:CreateButtons(connection)
             btn:SetOnClick(function()
                 print("Sending: " .. btn:GetIndex() .. " to Server")
                 connection:Send(btn:GetIndex())
-                btn:SetEnabled(false)
             end)
 
             table.insert(buttons, btn)
