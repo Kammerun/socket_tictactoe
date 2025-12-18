@@ -23,46 +23,72 @@ function Button:Create()
     return self
 end
 
+---Sets Position of Button
+---@param x number
+---@param y number
 function Button:SetPos(x, y)
     self.x = x
     self.y = y
 end
 
+---Gets Position of Button
+---@param w number
+---@param h number
 function Button:SetSize(w, h)
     self.w = w
     self.h = h
 end
 
+---Sets Index of Button
+---@param index number
 function Button:SetIndex(index)
     self.index = index
 end
 
+---Gets Index of Button
+---@return number
 function Button:GetIndex()
     return self.index
 end
 
+---Sets Text of Button
+---@param text string
 function Button:SetText(text)
     self.text = text
 end
 
+---Set the function that is being called when pressing the button
+---@param fn any
 function Button:SetOnClick(fn)
     self.onClick = fn
 end
 
+---Set Status of the Button
+---@param b boolean
 function Button:SetEnabled(b)
     self.enabled = b
 end
 
+---Sets the Color of the Button
+---@param r number
+---@param g number
+---@param b number
 function Button:SetColor(r, g ,b)
     self.color.r = r
     self.color.g = g
     self.color.b = b
 end
 
+---Gets the Color of the Button
+---@return number
+---@return number
+---@return number
 function Button:GetColor()
     return self.color.r, self.color.g, self.color.b
 end
 
+---Handles the Updating of Hovering Status and Position / Size of the Game Objects
+---@param dt number
 function Button:Update(dt)
     local mx, my = love.mouse.getPosition()
     self.hovered =
@@ -78,6 +104,11 @@ function Button:Update(dt)
     self.y = padding * math.ceil(self:GetIndex() / 3) + self.h * (math.ceil(self:GetIndex() / 3) - 1)
 end
 
+---Calls the OnClick Function on the Buttons the Mouse hovers
+---@param x number
+---@param y number
+---@param button any
+---@return boolean
 function Button:MousePressed(x, y, button)
     if not self.enabled then return false end
     if button == 1 and self.hovered then
@@ -89,7 +120,7 @@ function Button:MousePressed(x, y, button)
     return false
 end
 
-
+---Draws all Game Objects
 function Button:Draw()
     local r, g, b = self:GetColor()
     if self.hovered then

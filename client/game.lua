@@ -11,6 +11,8 @@ game.board = {
     {0, 0, 0},
 }
 
+---Create all Button Objects for the Game
+---@param connection any
 function game:CreateButtons(connection)
     for row, row_value in ipairs(game.board) do
         for column, value in ipairs(row_value) do
@@ -18,7 +20,7 @@ function game:CreateButtons(connection)
             local btn = button:Create()
             btn:SetPos(250 * column, 100 * row)
             btn:SetSize(200, 50)
-            btn:SetText(#buttons + 1)
+            btn:SetText(tostring(#buttons + 1))
             btn:SetColor(1, 0.5, 0)
             btn:SetIndex(#buttons + 1)
 
@@ -32,6 +34,8 @@ function game:CreateButtons(connection)
     end
 end
 
+---Handles the line sent by the Server
+---@param line string
 function game:HandleMessage(line)
     if line == "1" or line == "2" then
        love.window.setTitle("Player " .. line)
@@ -65,12 +69,15 @@ function game:HandleMessage(line)
     end
 end
 
+---Updates all Game Objects
+---@param dt number
 function game:Update(dt)
     for i = #buttons, 1, -1 do
         buttons[i]:Update(dt)
     end
 end
 
+---Draws all Game Objects
 function game:Draw()
     for i = #buttons, 1, -1 do
         buttons[i]:Draw()
@@ -90,6 +97,10 @@ function game:Draw()
     end
 end
 
+---Calls the MousePressed Event on all Buttons
+---@param x number
+---@param y number
+---@param button table
 function game:MousePressed(x, y, button)
     for i = #buttons, 1, -1 do
         if buttons[i]:MousePressed(x, y, button) then
@@ -97,8 +108,5 @@ function game:MousePressed(x, y, button)
         end
     end
 end
-
-
-
 
 return game

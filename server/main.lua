@@ -8,6 +8,8 @@ print("Please telnet to " .. ip .. " on port " .. port)
 
 local clients = {}
 
+---Sends a Text to all connected Clients
+---@param text string
 local function Broadcast(text)
     for i = 1, #clients do
         clients[i]:send(text .. "\n")
@@ -17,8 +19,10 @@ end
 local turn = 1
 local board = {0, 0, 0, 0, 0, 0, 0, 0, 0}
 
--- WOW this function is ugly, should definitly fix this mess
+---Checks if a player has won the Game
+---@return boolean
 local function CheckForWin()
+    -- WOW this function is ugly, should definitly fix this mess
     if
         --horizontal
         board[1] ~= 0 and board[1] == board[2] and board[2] == board[3] or
@@ -40,6 +44,11 @@ local function CheckForWin()
     return false
 end
 
+---Checks if a move is valid.
+---@param line string
+---@param client_id number
+---@return boolean
+---@return string?
 local function CheckValidMove(line, client_id)
     local move = tonumber(line)
     if not move then

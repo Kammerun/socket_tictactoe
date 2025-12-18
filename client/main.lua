@@ -2,8 +2,7 @@ local connection
 
 Game = require("game")
 
-local btn_text = "Feld 1, 1"
-
+---Löve's Load function
 function love.load()
     connection = require("luasocket")
     Game:CreateButtons(connection)
@@ -11,6 +10,7 @@ function love.load()
     connection:Send("Start of connection")
 end
 
+---Löve's Update function
 function love.update(dt)
     Game:Update(dt)
     local line, err = connection:Receive()
@@ -18,10 +18,15 @@ function love.update(dt)
     Game:HandleMessage(line)
 end
 
+---Löve's Doad function
 function love.draw()
     Game:Draw()
 end
 
+---Calls MousePressed on the Game
+---@param x number
+---@param y number
+---@param button table
 function love.mousepressed(x, y, button)
     Game:MousePressed(x, y, button)
 end
