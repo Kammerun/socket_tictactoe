@@ -2,7 +2,8 @@ local game = {}
 
 local button = require("gui/button")
 local buttons = {}
-
+local shown_text
+local show_time = 0
 
 game.board = {
     {0, 0, 0},
@@ -37,9 +38,13 @@ function game:HandleMessage(line)
     elseif string.sub(line, 1, 5) == "Error" then
         -- Draw to Screen on player they shouldnt have console open
         print(line)
+        shown_text = line
+        show_time = os.time() + 5 --show 5 sec
     elseif string.sub(line, 1, 6) == "Winner" then
         -- Draw to Screen on player they shouldnt have console open
         print(line)
+        shown_text = line
+        show_time = os.time() + 9999
     else
         local line_tbl = {}
         for i = 1, #line do
@@ -69,6 +74,19 @@ end
 function game:Draw()
     for i = #buttons, 1, -1 do
         buttons[i]:Draw()
+    end
+
+    if show_time > os.time() then
+        local window_width, window_height = love.window.getMode()
+        local font = love.graphics.getFont()
+        local textW = font:getWidth(shown_text)
+        local textH = font:getHeight()
+
+        love.graphics.print(
+            shown_text,
+            window_width / 2 - (textW / 2),
+            window_height - 100 - (textH / 2)
+        )
     end
 end
 

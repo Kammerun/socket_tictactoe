@@ -104,6 +104,7 @@ function Button:Draw()
     love.graphics.rectangle("line", self.x, self.y, self.w, self.h)
 
     -- Text zentrieren
+    love.graphics.setNewFont("resource/fonts/BBHBogle-Regular.ttf", 24)
     local font = love.graphics.getFont()
     local textW = font:getWidth(self.text)
     local textH = font:getHeight()
